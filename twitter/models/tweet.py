@@ -1,6 +1,19 @@
+import typing
+
 from django.db import models
 
+from applibs.logger import general_logger
 from twitter.models import CustomUser
+
+
+class TweetManager(models.Manager):
+
+    def get_by_user(self, author_id: int) -> typing.Optional[typing.List[dict]]:
+        try:
+            return self.values("id", "text", "created", "modified").filter(author_id=author_id).order_by("-modified")
+        except Exception as e:
+            general_logger.exception(e)
+            return None
 
 
 class Tweet(models.Model):
@@ -8,3 +21,5 @@ class Tweet(models.Model):
     text = models.CharField(max_length=280)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    objects = TweetManager()
