@@ -2,6 +2,7 @@ import typing
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import QuerySet
 
 from applibs.logger import general_logger
 
@@ -9,7 +10,7 @@ from applibs.logger import general_logger
 class FollowManager(models.Manager):
     def get_followed_ids(
         self, source_user_id: int
-    ) -> typing.Optional[typing.List[int]]:
+    ) -> typing.Optional[QuerySet["Follow"]]:
         try:
             return self.values("destination_user_id").filter(
                 source_user_id=source_user_id

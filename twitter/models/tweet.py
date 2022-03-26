@@ -1,13 +1,14 @@
 import typing
 
 from django.db import models
+from django.db.models import QuerySet
 
 from applibs.logger import general_logger
 from twitter.models import CustomUser
 
 
 class TweetManager(models.Manager):
-    def get_by_author(self, author_id: int) -> typing.Optional[typing.List[dict]]:
+    def get_by_author(self, author_id: int) -> typing.Optional[QuerySet["Tweet"]]:
         try:
             return (
                 self.values("id", "text", "created", "modified")
@@ -20,7 +21,7 @@ class TweetManager(models.Manager):
 
     def get_by_authors(
         self, author_ids: typing.List[int]
-    ) -> typing.Optional[typing.List[dict]]:
+    ) -> typing.Optional[QuerySet["Tweet"]]:
         try:
             return (
                 self.values("id", "author_id", "text", "created", "modified")
