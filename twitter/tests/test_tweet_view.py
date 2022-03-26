@@ -14,7 +14,6 @@ class TweetViewTest(APITestCase):
         self.tweet_url = reverse("tweet")
 
         self.profile_1 = fake.profile()
-        self.profile_2 = fake.profile()
 
         self.user_1 = CustomUser.objects.create_user(
             username=self.profile_1.get("username"),
@@ -24,16 +23,7 @@ class TweetViewTest(APITestCase):
             email=self.profile_1.get("mail"),
         )
 
-        self.user_2 = CustomUser.objects.create_user(
-            username=self.profile_2.get("username"),
-            password="demo_password",
-            first_name=self.profile_2.get("name").split()[0],
-            last_name=self.profile_2.get("name").split()[1],
-            email=self.profile_2.get("mail"),
-        )
-
         self.user_1_token = Token.objects.create(user=self.user_1)
-        self.user_2_token = Token.objects.create(user=self.user_2)
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_1_token.key)
 
