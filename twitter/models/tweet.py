@@ -7,10 +7,26 @@ from twitter.models import CustomUser
 
 
 class TweetManager(models.Manager):
-
-    def get_by_user(self, author_id: int) -> typing.Optional[typing.List[dict]]:
+    def get_by_author(self, author_id: int) -> typing.Optional[typing.List[dict]]:
         try:
-            return self.values("id", "text", "created", "modified").filter(author_id=author_id).order_by("-modified")
+            return (
+                self.values("id", "text", "created", "modified")
+                .filter(author_id=author_id)
+                .order_by("-modified")
+            )
+        except Exception as e:
+            general_logger.exception(e)
+            return None
+
+    def get_by_authors(
+        self, author_ids: typing.List[int]
+    ) -> typing.Optional[typing.List[dict]]:
+        try:
+            return (
+                self.values("id", "author_id", "text", "created", "modified")
+                .filter(author_id__in=author_ids)
+                .order_by("-modified")
+            )
         except Exception as e:
             general_logger.exception(e)
             return None
