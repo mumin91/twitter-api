@@ -1,10 +1,8 @@
 from django.core.management.base import BaseCommand
-from faker import Faker
 from rest_framework.authtoken.models import Token
 
+from applibs.fake import fake
 from twitter.models import CustomUser
-
-fake = Faker()
 
 
 class Command(BaseCommand):

@@ -1,13 +1,11 @@
 from django.urls import reverse
-from faker import Faker
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import ErrorDetail
-
-from twitter.models import CustomUser, Follow
-
-fake = Faker()
 from rest_framework.test import APITestCase
+
+from applibs.fake import fake
+from twitter.models import CustomUser, Follow
 
 
 class FollowUnfollowViewTest(APITestCase):
