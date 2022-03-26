@@ -9,7 +9,7 @@ fake = Faker()
 
 
 class Command(BaseCommand):
-    help = 'Create Dummy Users'
+    help = "Create Dummy Users"
 
     def handle(self, *args, **options):
         for i in range(5):
