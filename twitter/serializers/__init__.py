@@ -1,2 +1,3 @@
 from .follow_serializer import FollowSerializer
 from .tweet_serializer import TweetSerializer
+from .tweet_model_serializer import TweetModelSerializer

@@ -1,18 +1,19 @@
-from rest_framework import status
 from rest_framework.generics import ListAPIView
-from rest_framework.request import Request
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
+from applibs.pagination import TweetPagination
 from twitter.models import Tweet, Follow
+from twitter.serializers import TweetModelSerializer
 
 
 class NewsfeedView(ListAPIView):
-    def list(self, request: Request, *args, **kwargs) -> Response:
+    permission_classes = (IsAuthenticated,)
+    pagination_class = TweetPagination
+    serializer_class = TweetModelSerializer
 
-        author_ids = Follow.objects.get_followed_ids(request.user.id)
+    def get_queryset(self):
+        author_ids = Follow.objects.get_followed_ids(self.request.user.id)
         author_ids = list(author_ids)
-        author_ids.append(request.user.id)
+        author_ids.append(self.request.user.id)
 
-        if tweets := Tweet.objects.get_by_authors(author_ids):
-            return Response(data=tweets, status=status.HTTP_200_OK)
-        return Response("No tweet found", status=status.HTTP_204_NO_CONTENT)
+        return Tweet.objects.filter(author_id__in=self.request.user.id).order_by("-modified")
