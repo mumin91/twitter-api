@@ -49,4 +49,3 @@ class FollowTestCase(TestCase):
         ids = Follow.objects.get_followed_ids(source_user_id="id")
 
         self.assertIsNone(ids)
-
