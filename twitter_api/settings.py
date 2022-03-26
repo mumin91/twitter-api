@@ -128,3 +128,72 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "twitter.CustomUser"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    "DEFAULT_RENDERER_CLASSES": [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        'rest_framework.parsers.JSONParser',
+    ]
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    "formatters": {
+        "console": {
+            "format": "%(levelname)s | %(asctime)s | %(filename)s |"
+                      " %(module)s:%(funcName)s:%(lineno)d |"
+                      " %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console",
+            'filters': ['require_debug_true'],
+        },
+    },
+    "loggers": {
+        "general": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        'django': {
+            'handlers': ["console"],
+            'level': "INFO",
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ["console"],
+            'level': "INFO",
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ["console"],
+            'level': "INFO",
+            'propagate': False,
+        },
+
+        'django.db.backends': {
+            'handlers': ["console"],
+            'level': "DEBUG",
+            'propagate': False,
+        },
+    },
+}
+# LOG SETUP END #
