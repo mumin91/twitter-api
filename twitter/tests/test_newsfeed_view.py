@@ -45,13 +45,22 @@ class NewsfeedViewTest(APITestCase):
         self.user_3_token = Token.objects.create(user=self.user_3)
 
         for _ in range(5):
-            Tweet.objects.create(author=self.user_1, text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False))
+            Tweet.objects.create(
+                author=self.user_1,
+                text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False),
+            )
 
         for _ in range(6):
-            Tweet.objects.create(author=self.user_2, text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False))
+            Tweet.objects.create(
+                author=self.user_2,
+                text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False),
+            )
 
         for _ in range(3):
-            Tweet.objects.create(author=self.user_3, text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False))
+            Tweet.objects.create(
+                author=self.user_3,
+                text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False),
+            )
 
         Follow.objects.create(source_user=self.user_1, destination_user=self.user_2)
 
@@ -68,7 +77,9 @@ class NewsfeedViewTest(APITestCase):
         self.assertEqual(
             response.status_code, status.HTTP_200_OK, msg="response status ok"
         )
-        self.assertEqual(len(response.data.get("results")), 10, msg="default pagination ok")
+        self.assertEqual(
+            len(response.data.get("results")), 10, msg="default pagination ok"
+        )
         self.assertEqual(response.data.get("count"), 11, msg="default pagination ok")
 
     def test_no_follower_user(self):
@@ -84,5 +95,7 @@ class NewsfeedViewTest(APITestCase):
             status.HTTP_200_OK,
             msg="response status ok",
         )
-        self.assertEqual(len(response.data.get("results")), 6, msg="default pagination ok")
+        self.assertEqual(
+            len(response.data.get("results")), 6, msg="default pagination ok"
+        )
         self.assertEqual(response.data.get("count"), 6, msg="default pagination ok")

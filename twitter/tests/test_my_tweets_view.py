@@ -35,7 +35,10 @@ class MyTweetsViewTest(APITestCase):
         self.user_2_token = Token.objects.create(user=self.user_2)
 
         for _ in range(11):
-            Tweet.objects.create(author=self.user_1, text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False))
+            Tweet.objects.create(
+                author=self.user_1,
+                text=fake.paragraph(nb_sentences=2, variable_nb_sentences=False),
+            )
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_1_token.key)
 
@@ -50,7 +53,9 @@ class MyTweetsViewTest(APITestCase):
         self.assertEqual(
             response.status_code, status.HTTP_200_OK, msg="response status ok"
         )
-        self.assertEqual(len(response.data.get("results")), 10, msg="default pagination ok")
+        self.assertEqual(
+            len(response.data.get("results")), 10, msg="default pagination ok"
+        )
         self.assertEqual(response.data.get("count"), 11, msg="default pagination ok")
 
     def test_no_tweet_response(self):
@@ -66,7 +71,9 @@ class MyTweetsViewTest(APITestCase):
             status.HTTP_200_OK,
             msg="response status ok",
         )
-        self.assertEqual(len(response.data.get("results")), 0, msg="default pagination ok")
+        self.assertEqual(
+            len(response.data.get("results")), 0, msg="default pagination ok"
+        )
         self.assertEqual(response.data.get("count"), 0, msg="default pagination ok")
         self.assertIsNone(response.data.get("next"))
         self.assertIsNone(response.data.get("previous"))
