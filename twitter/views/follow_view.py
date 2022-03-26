@@ -4,12 +4,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from applibs.logger import general_logger
-from twitter.models import Follow
+from twitter.models import Follow, CustomUser
 from twitter.serializers import FollowSerializer
 
 
-class FollowUnfollowView(APIView):
+class FollowView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = FollowSerializer
 
@@ -18,17 +17,15 @@ class FollowUnfollowView(APIView):
         serializer.is_valid(raise_exception=True)
 
         try:
-            obj, created = Follow.objects.get_or_create(
-                source_user=request.user,
-                destination_user_id=serializer.validated_data.get("target_user_id"),
+            destination_user = CustomUser.objects.get(
+                pk=serializer.validated_data.get("target_user_id")
             )
-        except Exception as e:
-            general_logger.exception(e)
-            return Response("Action failed", status=status.HTTP_400_BAD_REQUEST)
+        except CustomUser.DoesNotExist:
+            return Response("Target user not found", status=status.HTTP_400_BAD_REQUEST)
 
-        if obj and not created:
-            obj.delete()
-            return Response("User unfollowed", status=status.HTTP_200_OK)
+        Follow.objects.create(
+            source_user_id=request.user.id,
+            destination_user_id=destination_user.id,
+        )
 
-        if created:
-            return Response("User followed", status=status.HTTP_200_OK)
+        return Response("User followed", status=status.HTTP_200_OK)
