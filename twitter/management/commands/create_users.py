@@ -1,5 +1,4 @@
 from django.core.management.base import BaseCommand
-from django.forms import model_to_dict
 from faker import Faker
 from rest_framework.authtoken.models import Token
 
@@ -34,6 +33,6 @@ class Command(BaseCommand):
                 "email": user.email,
             }
 
-            self.stdout.write(f"USER {i+1} CREATED WITH FOLLOWING DETAILS:")
+            self.stdout.write(f"USER {i + 1} CREATED WITH FOLLOWING DETAILS:")
             self.stdout.write(repr(data))
             self.stdout.write("\n")
