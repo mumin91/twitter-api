@@ -38,7 +38,7 @@ class TweetViewTest(APITestCase):
         response = self.client.post(self.tweet_url, payload, format="json")
 
         self.assertEqual(
-            response.status_code, status.HTTP_200_OK, msg="response status ok"
+            response.status_code, status.HTTP_201_CREATED, msg="response status ok"
         )
         self.assertEqual(response.data, payload, msg="response body ok")
 
@@ -55,7 +55,7 @@ class TweetViewTest(APITestCase):
         tweet_obj = tweet_objs[0]
 
         self.assertEqual(tweet_obj.author.id, self.user_1.id)
-        self.assertEqual(tweet_obj.text, tweet_obj["text"])
+        self.assertEqual(tweet_obj.text, tweet_obj.text)
 
     def test_tweet_validation_error_response(self):
         payload = {
