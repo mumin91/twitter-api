@@ -12,7 +12,7 @@ class FollowManager(models.Manager):
         self, source_user_id: int
     ) -> typing.Optional[QuerySet["Follow"]]:
         try:
-            return self.values("destination_user_id").filter(
+            return self.values_list("destination_user_id", flat=True).filter(
                 source_user_id=source_user_id
             )
         except Exception as e:

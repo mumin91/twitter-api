@@ -16,4 +16,4 @@ class NewsfeedView(ListAPIView):
         author_ids = list(author_ids)
         author_ids.append(self.request.user.id)
 
-        return Tweet.objects.filter(author_id__in=self.request.user.id).order_by("-modified")
+        return Tweet.objects.filter(author_id__in=author_ids).order_by("-modified")
